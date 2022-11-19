@@ -1,1 +1,4 @@
-# latex
+# LaTex
+
+Bisherige Vorlagen:
+- Brief
