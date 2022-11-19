@@ -1,0 +1,141 @@
+% !TeX spellcheck = de_DE
+\documentclass%%
+  [fontsize=11pt,
+   parskip=half,%%           Abstand zwischen Absaetzen
+   fromalign=right,%%        Plazierung des Briefkopfs
+   fromphone=on,%%           Telefonnummer im Absender
+   fromemail=on,%%
+   fromurl=off,%%
+   fromrule=aftername,%%     Linie im Absender (aftername, afteraddress)
+   fromemail=on,%%           Emailadresse
+   locfield=wide,
+   sections
+]{scrlttr2}
+\usepackage[T1]{fontenc}
+\usepackage[english, ngerman]{babel}
+\usepackage{url}
+\usepackage{lipsum}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{framed}
+\usepackage[export]{adjustbox}
+\usepackage{newcent}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{ragged2e}
+\usepackage{marvosym}
+% \usepackage{showframe}
+\usepackage[a4paper, top=2.7cm, left=2.5cm, right=2cm, bottom=2cm]{geometry}
+\usepackage[babel,german=quotes]{csquotes}
+\usepackage{scrlayer-scrpage}
+\usepackage{titlesec}
+\usepackage{todonotes}
+\titlespacing*{\subsection}{0pt}{10pt}{1pt} % set space above and below of section
+
+\usepackage{xcolor}
+\renewcommand\fbox{\fcolorbox{red}{white}}
+
+\renewcommand*\familydefault{\sfdefault}
+
+\setkomafont{fromname}{\scshape \LARGE}
+\setkomafont{backaddress}{\mdseries}
+\setkomavar{backaddress}{YOUR NAME\\SHORT ADDRESS}
+
+\makeatletter
+\@setplength{firstheadvpos}{2.7cm}
+\@setplength{firstfootvpos}{26cm} % Abstand des Footers von oben
+\@setplength{locwidth}{70mm} % Breite des Locationfeldes
+\@setplength{locvpos}{57mm} % Abstand des Locationfeldes von oben
+\@setplength{lochpos}{20mm} % Abstand des Locationfeldes von rechts
+\@setplength{foldmarkhpos}{6.5mm}
+\makeatother
+
+\LoadLetterOption{visualize}% loads visualize.lco to visualize boxes
+\showfields{address}% show the address box
+
+\begin{document}
+\setkomavar{fromname}{PETER PARKER}
+\setkomavar{fromaddress}{YOUR ADDRESS}
+\setkomavar{fromphone}{+49123456789}%
+\setkomavar{fromemail}{peterparker@mcu.com}
+\setkomavar{backaddressseparator}{ - }
+\setkomavar{place}{KNOWHERE}
+\setkomavar{date}{\today}
+
+\newcommand{\toforname}{KEVIN}
+\newcommand{\tolastname}{FEIGE}
+\newcommand{\toaddress}{MARVEL\\
+  SIR \toforname \tolastname\\
+  ADDRESS}
+
+\setkomavar{firstfoot}{\footnotesize
+  \rule[3pt]{\textwidth}{.4pt}\\
+  \begin{tabular}[t]{l@{}}
+    \usekomavar{fromname}\\
+    \usekomavar{fromaddress}\\
+  \end{tabular}
+  \hfill
+  \ifkomavarempty{frombank}{}{
+    \hfill
+    \begin{tabular}[t]{l@{}}
+      \usekomavar{frombank}
+    \end{tabular}
+    }
+}
+\setkomavar{frombank}{\textbf{Kontodaten:}\\
+  \textbf{Kontoinhaber:} \texttt{\usekomavar{fromname}}\\
+  \textbf{IBAN:} \texttt{DE00\,1234\,5678\,9999\,12345\,77}\\
+  \textbf{BIC:} \texttt{ABCDEF1XYZ}\\
+  Kreissparkasse Jupiter
+}
+
+\KOMAoptions{footwidth=\useplength{firstfootwidth}}
+\ForEachLayerOfPageStyle*{plain.scrheadings}{%
+  \ifstrstart{#1}{plain.scrheadings.foot}{%
+    \ModifyLayer[
+      voffset=\useplength{firstfootvpos}
+    ]{#1}
+  }{}
+}% shift the footer down
+\ModifyLayer[
+  addvoffset=-1ex
+]{plain.scrheadings.foot.above.line}% shift the footsepline up
+\addtokomafont{pagefoot}{\normalfont}
+\clearpairofpagestyles
+\cfoot*{\usekomavar{firstfoot}}
+
+\pagestyle{plain}
+
+\newsavebox\signaturebox
+\sbox\signaturebox{
+  \begin{tabular}{@{}l@{}}
+    \underline{\smash{\includegraphics[height=3em]{unterschrift.png}}}\\
+    \usekomavar{fromname}
+  \end{tabular}
+}
+\setkomavar{signature}{\usebox{\signaturebox}}%
+\renewcommand*{\raggedsignature}{\raggedright}
+
+\renewcaptionname{ngerman}{\enclname}{\textbf{Anlagen}}
+
+\begin{letter}{
+  \toaddress
+}
+
+\setkomavar{subject}{BETREFF}
+
+\opening{Lieber HERR/FRAU \tolastname,}
+
+bla bla bla
+
+%\newpage
+
+\vspace*{-0.1cm}
+\section*{ANDERES TOPIC}
+bla bla bla\\
+
+\closing{Mit freundlichen Grüßen,}
+
+\end{letter}
+\end{document}
+
